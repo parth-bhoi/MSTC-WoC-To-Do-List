@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <Title>This is a Todolist site</Title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/home.css' %}" type = "text/css">
+        <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+        
+    </head>
+    
+    <body>
+        <div class = "grid-container">
+            <div class = "grid-item item1">
+                <h1>This is your todolist</h1>
+            </div>
+            
+            <div class = "grid-item item2">
+                <h2>Enter the date you want to add tasks</h2>
+                <form action='' method='POST'>{% csrf_token %}            
+                    {{home_form.as_p}}           
+                <input type='submit' value='Add'/> 
+                </form>
+            </div>
+
+            <div class = "grid-item item3">
+                <ul>
+                    {% for dates in y %}
+                    <li>{{ dates.date_added }}:-<a href = "/{{ dates.id }}"> click here to view tasks</a></li>
+                    <p>
+                        <a href = "/deldate/{{dates.id}}">click here to delete this date</a>
+                    </p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+{% load static %}
+<html>
+
+    <head>
+        <Title>This is a Todolist site</Title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/view_task.css' %}" type = "text/css">
+        <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+    </head>
+   
+    <body>
+        <div class = "grid-container">
+            <div class = "grid-item item1">
+                <h1>This is your todolist for date {{q.date_added}}</h1>
+                <h2>Click on the task to mark complete</h2>
+            </div>
+            <div class = "grid-item item2">
+                    <a href = "http://127.0.0.1:8000"><button type="button">Home</button></a>
+            </div>
+            <div class = "grid-item item3">
+                <ul>
+                {% for taskv in tasks %}
+                {% if taskv.is_complete %}
+                <li>
+                <del> {{taskv.task}}</del>
+
+                <p>
+                    <a href = "delete/{{taskv.id}}">Delete this task</a>
+                </p>
+                </li>
+                    {% elif today_date <= taskv.due_date %}
+                    <a href ="complete/{{taskv.id}}">
+                        <li>
+                            {{taskv.task}}
+                            <p>
+                            <a href = "delete/{{taskv.id}}">Delete this task</a>
+                            <br> your due date is {{taskv.due_date}}</br>
+                        </p>
+                        </li>
+                    </a>
+                    {% else %}
+                    
+                        <li>
+                            <del> {{taskv.task}}</del>
+                            <p>
+                                you missed to do your task due date was {{taskv.due_date}}
+                            </p>
+                            <p>
+                            <a href = "delete/{{taskv.id}}">Delete this task</a>
+                        </p>
+                        </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class = "grid-item item4">
+                <form action='' method='POST'>{% csrf_token %}
+                    {{view_task_form.as_p}}
+                <input type='submit' value='Add task'/> 
+                </form>
+                <a href = "delcomplete"><button type="button">Delete completed</button></a>
+                <a href = "delall"><button type="button">Delete all</button></a>
+            </div>
+        </div>
+    </body>
+</html>
